@@ -1,0 +1,2 @@
+../Core/Src/trivia_db.c:22:17:DB_Get	1
+../Core/Src/trivia_db.c:26:10:DB_Count	1

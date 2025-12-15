@@ -1,0 +1,2 @@
+../Core/Src/trivia_db.c:22:17:DB_Get	16	static
+../Core/Src/trivia_db.c:26:10:DB_Count	4	static

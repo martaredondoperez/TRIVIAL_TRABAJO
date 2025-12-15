@@ -1,0 +1,2 @@
+../Core/Src/game.c:17:6:GAME_Init	4	static
+../Core/Src/game.c:23:6:GAME_Tick	24	static

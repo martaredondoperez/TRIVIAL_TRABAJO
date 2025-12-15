@@ -1,0 +1,2 @@
+../Core/Src/input_joy.c:24:10:JOY_GetEvent	24	static
+../Core/Src/input_joy.c:69:6:JOY_Init	4	static
