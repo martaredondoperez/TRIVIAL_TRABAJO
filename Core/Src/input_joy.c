@@ -29,7 +29,7 @@ JoyEvent JOY_GetEvent(void){
     HAL_ADC_Start(&hadc1);
 
     HAL_ADC_PollForConversion(&hadc1, 10);
-    uint16_t x = HAL_ADC_GetValue(&hadc1);
+    uint16                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         _t x = HAL_ADC_GetValue(&hadc1);
 
     HAL_ADC_PollForConversion(&hadc1, 10);
     uint16_t y = HAL_ADC_GetValue(&hadc1);
