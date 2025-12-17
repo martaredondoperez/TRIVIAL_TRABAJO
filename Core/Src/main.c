@@ -21,6 +21,7 @@
 #include "adc.h"
 #include "spi.h"
 #include "gpio.h"
+#include "_syslist.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
