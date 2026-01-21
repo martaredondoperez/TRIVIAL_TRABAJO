@@ -1,0 +1,5 @@
+../Core/Src/joystick_simple.c:10:23:sw_pressed	16	static
+../Core/Src/joystick_simple.c:15:6:JoystickSimple_Init	32	static
+../Core/Src/joystick_simple.c:33:6:JoystickSimple_Calibrate	32	static
+../Core/Src/joystick_simple.c:47:10:JoystickSimple_ReadRaw	16	static
+../Core/Src/joystick_simple.c:52:11:JoystickSimple_Poll	40	static

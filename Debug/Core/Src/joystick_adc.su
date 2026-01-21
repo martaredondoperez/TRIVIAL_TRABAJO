@@ -1,0 +1,5 @@
+../Core/Src/joystick_adc.c:15:23:sw_pressed	16	static
+../Core/Src/joystick_adc.c:20:6:JoystickADC_Init	32	static
+../Core/Src/joystick_adc.c:47:19:JoystickADC_Start	32	static
+../Core/Src/joystick_adc.c:76:8:JoystickADC_GetDir	24	static
+../Core/Src/joystick_adc.c:107:11:JoystickADC_Poll	32	static

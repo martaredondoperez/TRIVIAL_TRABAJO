@@ -1,0 +1,2 @@
+../Core/Src/adc_reader.c:10:6:AdcReader_Init	24	static
+../Core/Src/adc_reader.c:17:10:AdcReader_ReadBlocking	40	static

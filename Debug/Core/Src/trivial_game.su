@@ -1,0 +1,15 @@
+../Core/Src/trivial_game.c:18:16:next_q	32	static
+../Core/Src/trivial_game.c:27:13:render_menu	16	static
+../Core/Src/trivial_game.c:35:13:render_res	48	static
+../Core/Src/trivial_game.c:44:13:render_end	48	static
+../Core/Src/trivial_game.c:54:13:clear_line	16	static
+../Core/Src/trivial_game.c:58:13:draw_option_line	72	static
+../Core/Src/trivial_game.c:69:13:render_q_full	56	static
+../Core/Src/trivial_game.c:108:13:update_arrow_only	24	static
+../Core/Src/trivial_game.c:146:13:seq_start	24	static
+../Core/Src/trivial_game.c:153:13:seq_update	24	static
+../Core/Src/trivial_game.c:165:13:countdown_reset	16	static
+../Core/Src/trivial_game.c:171:13:countdown_update	48	static
+../Core/Src/trivial_game.c:203:13:start_q	16	static
+../Core/Src/trivial_game.c:218:6:TrivialGame_Init	24	static
+../Core/Src/trivial_game.c:231:6:TrivialGame_Update	32	static

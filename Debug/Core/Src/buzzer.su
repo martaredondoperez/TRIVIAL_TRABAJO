@@ -1,0 +1,5 @@
+../Core/Src/buzzer.c:11:20:buzzer_write	24	static
+../Core/Src/buzzer.c:20:6:Buzzer_Init	24	static
+../Core/Src/buzzer.c:30:6:Buzzer_Beep	24	static
+../Core/Src/buzzer.c:38:6:Buzzer_Update	24	static
+../Core/Src/buzzer.c:48:6:Buzzer_Off	16	static

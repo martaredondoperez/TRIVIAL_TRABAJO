@@ -1,0 +1,5 @@
+../Core/Src/buzzer.c:11:20:buzzer_write	2
+../Core/Src/buzzer.c:20:6:Buzzer_Init	1
+../Core/Src/buzzer.c:30:6:Buzzer_Beep	1
+../Core/Src/buzzer.c:38:6:Buzzer_Update	3
+../Core/Src/buzzer.c:48:6:Buzzer_Off	1
