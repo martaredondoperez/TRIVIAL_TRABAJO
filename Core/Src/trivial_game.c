@@ -50,9 +50,9 @@ static void render_end(TrivialGame *g) {
   LCD_PrintLine(g->lcd, 3, "SW: menu");
 }
 
-// limpia una línea sin LCD_Clear (evita flash)
+// limpia una línea sin LCD_Clear
 static void clear_line(LCD_PCF8574 *lcd, uint8_t row) {
-  LCD_PrintLine(lcd, row, "                    "); // 20 espacios
+  LCD_PrintLine(lcd, row, "                    ");
 }
 
 static void draw_option_line(TrivialGame *g, uint8_t opt_index, uint8_t with_arrow) {
@@ -84,16 +84,10 @@ static void render_q_full(TrivialGame *g) {
   LCD_PrintLine(g->lcd, 0, qline);
 
   // opciones A-D (líneas 1..4 -> aquí 1..3 y la 4 no existe, así que D va en la 3)
-  // Tu LCD es 20x4: líneas válidas 0..3, así que:
-  draw_option_line(g, 0, (g->sel==0)); // row 1
-  draw_option_line(g, 1, (g->sel==1)); // row 2
-  draw_option_line(g, 2, (g->sel==2)); // row 3? OJO: row 3 es la última
-  // Para que quepan 4 opciones en 20x4: usamos filas 1,2,3 para A,B,C y D también en fila 3 no cabe.
-  // En tu versión original D y tiempo iban en la fila 3 alternando C/D.
-  // Aquí lo resolvemos mostrando SIEMPRE A,B,C en 1..3 y D en 3 sustituyendo C cuando selecciones 3.
-  // Para mantener compatibilidad, hacemos render “mixto”:
-  //  - Si sel<=2: fila 3 muestra C (con flecha si toca)
-  //  - Si sel==3: fila 3 muestra D (con flecha)
+  draw_option_line(g, 0, (g->sel==0));
+  draw_option_line(g, 1, (g->sel==1));
+  draw_option_line(g, 2, (g->sel==2));
+
   if (g->sel <= 2) {
     draw_option_line(g, 2, (g->sel==2));
   } else {
@@ -109,7 +103,7 @@ static void update_arrow_only(TrivialGame *g) {
   if (g->sel == g->last_sel) return;
 
   // Re-dibuja la fila 3 según el nuevo sel (porque alterna C/D)
-  // Si antes estaba en 3 o ahora está en 3, hay que refrescar esa línea sí o sí.
+  // Si antes estaba en 3 o ahora está en 3, hay que refrescar esa línea
   uint8_t need_row3_refresh = ((g->last_sel == 3) || (g->sel == 3));
 
   // Quita flecha en la anterior, si estaba en A o B (0,1)

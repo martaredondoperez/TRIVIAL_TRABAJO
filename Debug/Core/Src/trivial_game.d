@@ -30,8 +30,8 @@ Core/Src/trivial_game.o: ../Core/Src/trivial_game.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
- ../Core/Inc/joystick_simple.h ../Core/Inc/adc_reader.h \
- ../Core/Inc/trivial_questions.h ../Core/Inc/buzzer.h
+ ../Core/Inc/joystick_simple.h ../Core/Inc/adc.h ../Core/Inc/main.h \
+ ../Core/Inc/gpio.h ../Core/Inc/trivial_questions.h ../Core/Inc/buzzer.h
 ../Core/Inc/trivial_game.h:
 ../Core/Inc/lcd_pcf8574.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
@@ -65,6 +65,8 @@ Core/Src/trivial_game.o: ../Core/Src/trivial_game.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 ../Core/Inc/joystick_simple.h:
-../Core/Inc/adc_reader.h:
+../Core/Inc/adc.h:
+../Core/Inc/main.h:
+../Core/Inc/gpio.h:
 ../Core/Inc/trivial_questions.h:
 ../Core/Inc/buzzer.h:

@@ -1,5 +1,5 @@
 Core/Src/joystick_simple.o: ../Core/Src/joystick_simple.c \
- ../Core/Inc/joystick_simple.h \
+ ../Core/Inc/joystick_simple.h ../Core/Inc/adc.h ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -30,8 +30,10 @@ Core/Src/joystick_simple.o: ../Core/Src/joystick_simple.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
- ../Core/Inc/adc_reader.h
+ ../Core/Inc/gpio.h
 ../Core/Inc/joystick_simple.h:
+../Core/Inc/adc.h:
+../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
@@ -62,4 +64,4 @@ Core/Src/joystick_simple.o: ../Core/Src/joystick_simple.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
-../Core/Inc/adc_reader.h:
+../Core/Inc/gpio.h:

@@ -107,24 +107,20 @@ int main(void)
   MX_I2C1_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  // LCD (si no imprime, prueba LCD_MAP_B)
   LCD_Init(&lcd, &hi2c1, 0x27, LCD_MAP_A);
   LCD_Backlight(&lcd, 1);
 
-  // ADC reader (bloqueante)
+  // ADC reader
   AdcReader_Init(&adc_vry, &hadc1, ADC_CHANNEL_10, ADC_SAMPLETIME_144CYCLES);
 
   // Joystick simple
-  JoystickSimple_Init(&joy, &adc_vry, GPIOB, GPIO_PIN_12);
-  JoystickSimple_Calibrate(&joy);
+  JoystickSimple_Init(&joy, &hadc1, GPIOB, GPIO_PIN_12);
+  //JoystickSimple_Calibrate(&joy);
+  JoystickSimple_Start(&joy);
 
   // Juego
   Buzzer_Init(&bz, GPIOB, GPIO_PIN_13, 1);   // PB13, activo alto
   TrivialGame_Init(&game, &lcd, &joy, &bz);
-
-
-  // Juego
- // TrivialGame_Init(&game, &lcd, &joy);
 
   /* USER CODE END 2 */
 
@@ -187,7 +183,14 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+#include "joystick_simple.h"
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == GPIO_PIN_12) {
+    JoystickSimple_OnSWInterrupt();
+  }
+}
 /* USER CODE END 4 */
 
 /**

@@ -7,46 +7,32 @@
 
 #include "joystick_simple.h"
 
-static inline uint8_t sw_pressed(GPIO_TypeDef *port, uint16_t pin) {
-  // Pull-up -> pulsado = 0
-  return (HAL_GPIO_ReadPin(port, pin) == GPIO_PIN_RESET) ? 1 : 0;
+static volatile uint8_t g_sw_event = 0;
+
+void JoystickSimple_OnSWInterrupt(void)
+{
+  g_sw_event = 1;
 }
 
-void JoystickSimple_Init(JoystickSimple *j, AdcReader *adc, GPIO_TypeDef *sw_port, uint16_t sw_pin)
+void JoystickSimple_Init(JoystickSimple *j,
+                         ADC_HandleTypeDef *hadc,
+                         GPIO_TypeDef *sw_port, uint16_t sw_pin)
 {
-  j->adc = adc;
+  j->hadc = hadc;
   j->sw_port = sw_port;
   j->sw_pin = sw_pin;
 
-  j->deadzone = 250;
-  j->threshold = 700;
+  j->last_dir = 0;
+  j->last_dir_ms = HAL_GetTick();
   j->repeat_ms = 180;
 
-  j->center = 2048;
-
-  uint32_t now = HAL_GetTick();
-  j->last_dir_ms = now;
-  j->last_sw_ms = now;
-  j->last_sw_state = 0;
+  j->up_th = 1200;
+  j->down_th = 2800;
 }
 
-void JoystickSimple_Calibrate(JoystickSimple *j)
+HAL_StatusTypeDef JoystickSimple_Start(JoystickSimple *j)
 {
-  uint32_t sum = 0;
-  for (int i = 0; i < 16; i++) {
-    uint16_t v = AdcReader_ReadBlocking(j->adc, 10);
-    sum += v;
-    HAL_Delay(2);
-  }
-  uint16_t mid = (uint16_t)(sum / 16U);
-
-  // evita calibrar a basura si el pin estuviera mal
-  if (mid > 50 && mid < 4045) j->center = mid;
-}
-
-uint16_t JoystickSimple_ReadRaw(JoystickSimple *j)
-{
-  return AdcReader_ReadBlocking(j->adc, 10);
+  return HAL_OK;
 }
 
 JoyEvents JoystickSimple_Poll(JoystickSimple *j)
@@ -54,30 +40,32 @@ JoyEvents JoystickSimple_Poll(JoystickSimple *j)
   JoyEvents e = {0};
   uint32_t now = HAL_GetTick();
 
-  // UP/DOWN con repetición
-  uint16_t v = AdcReader_ReadBlocking(j->adc, 10);
-  int32_t y = (int32_t)v - (int32_t)j->center;
+  HAL_ADC_Start(j->hadc);
+  if (HAL_ADC_PollForConversion(j->hadc, 10) == HAL_OK) {
+    uint16_t v = (uint16_t)HAL_ADC_GetValue(j->hadc);
 
-  if ((now - j->last_dir_ms) >= j->repeat_ms) {
-    if (!(y < (int32_t)j->deadzone && y > -(int32_t)j->deadzone)) {
-      if (y > (int32_t)j->threshold) {
-        e.down = 1;
-        j->last_dir_ms = now;
-      } else if (y < -(int32_t)j->threshold) {
-        e.up = 1;
-        j->last_dir_ms = now;
-      }
+    uint8_t dir = 0;
+    if (v < j->up_th) dir = 1;
+    else if (v > j->down_th) dir = 2;
+
+    if (dir != 0 && dir != j->last_dir) {
+      j->last_dir = dir;
+      j->last_dir_ms = now;
+      if (dir == 1) e.up = 1;
+      else e.down = 1;
+    } else if (dir != 0 && (now - j->last_dir_ms) >= j->repeat_ms) {
+      j->last_dir_ms = now;
+      if (dir == 1) e.up = 1;
+      else e.down = 1;
+    } else if (dir == 0) {
+      j->last_dir = 0;
     }
   }
+  HAL_ADC_Stop(j->hadc);
 
-  // SW con debounce
-  uint8_t sw = sw_pressed(j->sw_port, j->sw_pin);
-  if (sw != j->last_sw_state) {
-    if (now - j->last_sw_ms >= 120) {
-      j->last_sw_ms = now;
-      j->last_sw_state = sw;
-      if (sw) e.press = 1;
-    }
+  if (g_sw_event) {
+    g_sw_event = 0;
+    e.press = 1;
   }
 
   return e;

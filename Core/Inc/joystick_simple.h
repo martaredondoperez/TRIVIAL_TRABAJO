@@ -13,9 +13,9 @@
  */
 
 #pragma once
-#include "stm32f4xx_hal.h"
+#include "adc.h"
+#include "gpio.h"
 #include <stdint.h>
-#include "adc_reader.h"
 
 typedef struct {
   uint8_t up;
@@ -24,22 +24,24 @@ typedef struct {
 } JoyEvents;
 
 typedef struct {
-  AdcReader *adc;              // lector ADC (VRy)
+  ADC_HandleTypeDef *hadc;
   GPIO_TypeDef *sw_port;
   uint16_t sw_pin;
 
-  uint16_t center;
-  uint16_t deadzone;
-  uint16_t threshold;
-
-  uint32_t repeat_ms;
+  uint8_t last_dir;
   uint32_t last_dir_ms;
+  uint32_t repeat_ms;
 
-  uint32_t last_sw_ms;
-  uint8_t  last_sw_state;
+  uint16_t up_th;
+  uint16_t down_th;
 } JoystickSimple;
 
-void JoystickSimple_Init(JoystickSimple *j, AdcReader *adc, GPIO_TypeDef *sw_port, uint16_t sw_pin);
-void JoystickSimple_Calibrate(JoystickSimple *j);
+void JoystickSimple_Init(JoystickSimple *j,
+                         ADC_HandleTypeDef *hadc,
+                         GPIO_TypeDef *sw_port, uint16_t sw_pin);
+
+HAL_StatusTypeDef JoystickSimple_Start(JoystickSimple *j);
+
 JoyEvents JoystickSimple_Poll(JoystickSimple *j);
-uint16_t JoystickSimple_ReadRaw(JoystickSimple *j);  // útil para debug
+
+void JoystickSimple_OnSWInterrupt(void);

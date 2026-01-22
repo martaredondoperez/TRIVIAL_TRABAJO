@@ -18,13 +18,13 @@ uint16_t AdcReader_ReadBlocking(AdcReader *r, uint32_t timeout_ms)
 {
   ADC_ChannelConfTypeDef sConfig = {0};
 
-  // Fuerza canal por software (no dependes de CubeMX más allá de que ADC1 exista)
+  // Fuerza canal por software
   sConfig.Channel = r->channel;
   sConfig.Rank = 1;
   sConfig.SamplingTime = r->sampling_time;
 
   if (HAL_ADC_ConfigChannel(r->hadc, &sConfig) != HAL_OK) {
-    return 0xFFFF; // error config
+    return 0xFFFF; // error configuracion
   }
 
   if (HAL_ADC_Start(r->hadc) != HAL_OK) {
@@ -33,7 +33,7 @@ uint16_t AdcReader_ReadBlocking(AdcReader *r, uint32_t timeout_ms)
 
   if (HAL_ADC_PollForConversion(r->hadc, timeout_ms) != HAL_OK) {
     HAL_ADC_Stop(r->hadc);
-    return 0xFFFD; // timeout/error poll
+    return 0xFFFD; // timeout
   }
 
   uint16_t v = (uint16_t)HAL_ADC_GetValue(r->hadc);

@@ -7,13 +7,13 @@
 
 #include "joystick_adc.h"
 
-#define JOY_INVERT_Y            0   // 1 si arriba/abajo va al revés
+#define JOY_INVERT_Y            0   // 1 si arriba
 
-// Suavizado (0 = sin filtro). 3..6 va bien.
-#define JOY_FILTER_SHIFT        2   // 2 => promedio exponencial 1/4
+
+#define JOY_FILTER_SHIFT        2   // 2 promedio exponencial 1/4
 
 static inline uint8_t sw_pressed(GPIO_TypeDef *port, uint16_t pin) {
-  // Pull-up -> pulsado = 0
+  // Pull-up, pulsado = 0
   return (HAL_GPIO_ReadPin(port, pin) == GPIO_PIN_RESET) ? 1 : 0;
 }
 
@@ -40,13 +40,13 @@ void JoystickADC_Init(JoystickADC *j,
   j->last_sw_ms = now;
   j->last_sw_state = 0;
 
-  // Estado interno de filtro usando center_x como “y_filt” sin cambiar tu struct
+  // Estado interno de filtro usando center_x como “y_filt”
   j->center_x = 2048;
 }
 
 HAL_StatusTypeDef JoystickADC_Start(JoystickADC *j)
 {
-  // Por robustez: si el ADC estaba arrancado por DMA, lo paramos
+  // ADC  arrancado por DMA, se para
   HAL_ADC_Stop_DMA(j->hadc);
   HAL_ADC_Stop(j->hadc);
 
@@ -54,7 +54,6 @@ HAL_StatusTypeDef JoystickADC_Start(JoystickADC *j)
   HAL_StatusTypeDef st = HAL_ADC_Start_DMA(j->hadc, (uint32_t*)j->dma_buf, 1);
   if (st != HAL_OK) return st;
 
-  // Calibración simple del centro: promedia unas cuantas muestras
   HAL_Delay(20);
 
   uint32_t sum = 0;
@@ -78,7 +77,7 @@ JoyDir JoystickADC_GetDir(JoystickADC *j)
   // Lee VRy (DMA)
   uint16_t raw = j->dma_buf[0];
 
-  // Filtro exponencial simple (suaviza ruido)
+  // Filtro exponencial simple (
 #if JOY_FILTER_SHIFT > 0
   uint16_t y_filt = (uint16_t)j->center_x;
   y_filt = (uint16_t)(y_filt + ((int32_t)raw - (int32_t)y_filt) / (1 << JOY_FILTER_SHIFT));
